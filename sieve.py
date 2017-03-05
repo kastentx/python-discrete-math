@@ -1,4 +1,3 @@
-from isPrime import isPrime
 from math import sqrt
 
 def sieve(num):
@@ -9,7 +8,7 @@ def sieve(num):
         if i > searchMax:
             break
 
-        for j in allInts:
+        for j in allInts[i:]:
             if j % i == 0 and j != i:
                 allInts.remove(j)
 
