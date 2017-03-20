@@ -1,10 +1,13 @@
-import math
+from math import sqrt
 
 def sieve(num):
-    allInts = [2]
-    allInts.extend(range(3,math.ceil(math.sqrt(num)),2))
+    allInts = list(range(2,num+1,))
+    searchMax = int(sqrt(num))
 
     for i in allInts:
+        if i > searchMax:
+            break
+
         for j in allInts[i:]:
             if j % i == 0 and j != i:
                 allInts.remove(j)

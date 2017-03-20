@@ -1,25 +1,25 @@
 # Prime Factorization
-import math
+from sieve import sieve
 
-def isPrime(num):
-    # 0, 1, and 2 are special cases, so first handle those
-    if num <= 1:
-        return False
-    elif num == 2:
-        return True
+def pFactorize(num):
+    primeFactors = list()
+    factorization = list()
+
+    # build list of prime factors
+    for e in sieve(num):
+        if num % e == 0:
+            primeFactors.append(e)
+
+    # divide by factors to build factorization
+    for prime in primeFactors:
+        while num % prime == 0:
+            factorization.append(prime)
+            num = num / prime
     
-    # we only need to go up to the square root
-    # of the number we are testing
-    testMax = int((math.sqrt(num))) + 1
-
-    # loop runs from 2 up to but NOT including
-    # the value of testMax
-    for i in range(2,testMax):
-        if num % i == 0:
-            return False
-    return True
+    # format output
+    return ' x '.join(map(str, factorization))
 
 # get input
 while 1<2:
-    myNum = int(input('Enter a number to see if it is prime: '))
-    print(isPrime(myNum))
+    myNum = int(input('Enter a number to see its prime factorization: '))
+    print('factorized:', pFactorize(myNum))
