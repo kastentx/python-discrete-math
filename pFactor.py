@@ -1,5 +1,5 @@
 # Prime Factorization
-from sieve import sieve
+from sievey import sieve
 
 def pFactorize(num):
     primeFactors = list()
