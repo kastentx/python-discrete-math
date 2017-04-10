@@ -29,7 +29,7 @@ def openNeighborhood(G,v):
     for i in range(order(G)):
         if G[v][i] == 1:
             neighborhood.add(i)
-        neighborhood.add(v)
+    neighborhood.add(v)
     return neighborhood
 
 def closedNeighborhood(G,v):
@@ -53,9 +53,7 @@ def isDom(S, G):
     totalNeighbors = set()
     for v in S:
         totalNeighbors = totalNeighbors | openNeighborhood(G,v)
-    #print(totalNeighbors)
     return (len(totalNeighbors) == order(G))
-
 
 def complement(G):
     complement = G
@@ -66,7 +64,6 @@ def complement(G):
             else:
                 complement[i][j] = 0
     return complement
-
 
 # Function Calls
 print("The adjacency matrix of G is: ")
