@@ -40,6 +40,16 @@ def isConnected(G):
             break
     return True if len(totalNeighbors) == order(G) else False
 
+def getComplement(G):
+    complement = G
+    for i in range(order(G)):
+        for j in range(order(G)):
+            if G[i][j] == 0:
+                complement[i][j] = 1
+            else:
+                complement[i][j] = 0
+    return complement
+
 # Function Calls
 print("The adjacency matrix of G is: ")
 print(G)
@@ -49,6 +59,7 @@ print('size:', size(G))
 print('max degree:', maxDegree(G))
 print('min degree:', minDegree(G))
 print('connected:', isConnected(G))
+print('complement:\n', getComplement(G))
 print('\n')
 #for i in range(0,order(G)):
 #    print('degree of %s:' % i, degree(G,i))
