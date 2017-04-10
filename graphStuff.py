@@ -4,7 +4,7 @@ import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph1.txt", int)
+G = np.loadtxt("graphs/graph7.txt", int)
 
 def order(G):
     return len(G)
@@ -29,11 +29,12 @@ def openNeighborhood(G,v):
     for i in range(order(G)):
         if G[v][i] == 1:
             neighborhood.add(i)
+        neighborhood.add(v)
     return neighborhood
 
-def closedNeighborhood(G, v):
-    closed = openNeighborhood(G, v)
-    closed.remove(v)
+def closedNeighborhood(G,v):
+    closed = openNeighborhood(G,v).copy()
+    closed.discard(v)
     return closed
 
 def isConnected(G):
@@ -47,6 +48,14 @@ def isConnected(G):
         if len(totalNeighbors) == order(G):
             break
     return True if len(totalNeighbors) == order(G) else False
+
+def isDom(S, G):
+    totalNeighbors = set()
+    for v in S:
+        totalNeighbors = totalNeighbors | openNeighborhood(G,v)
+    #print(totalNeighbors)
+    return (len(totalNeighbors) == order(G))
+
 
 def complement(G):
     complement = G
@@ -69,6 +78,8 @@ print('max degree:', maxDegree(G))
 print('min degree:', minDegree(G))
 print('degree sequence:', degreeSequence(G))
 print('connected:', isConnected(G))
+S = {2, 4}
+print('2 and 4 dominate?', isDom(S,G))
 print('complement:\n', complement(G))
 print('\n')
 for i in range(0,order(G)):
