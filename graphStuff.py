@@ -4,7 +4,7 @@ import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph2.txt", int)
+G = np.loadtxt("graphs/graph1.txt", int)
 
 def order(G):
     return len(G)
@@ -30,6 +30,11 @@ def openNeighborhood(G,v):
         if G[v][i] == 1:
             neighborhood.add(i)
     return neighborhood
+
+def closedNeighborhood(G, v):
+    closed = openNeighborhood(G, v)
+    closed.remove(v)
+    return closed
 
 def isConnected(G):
     totalNeighbors  = openNeighborhood(G,0)
@@ -66,6 +71,7 @@ print('degree sequence:', degreeSequence(G))
 print('connected:', isConnected(G))
 print('complement:\n', complement(G))
 print('\n')
-#for i in range(0,order(G)):
-#    print('degree of %s:' % i, degree(G,i))
-#    print('open neighborhood of %s:' % i, openNeighborhood(G,i))
+for i in range(0,order(G)):
+    print('degree of %s:' % i, degree(G,i))
+    print('open neighborhood of %s:' % i, openNeighborhood(G,i))
+    print('closed neighborhood of %s:' % i, closedNeighborhood(G,i))
