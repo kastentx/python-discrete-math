@@ -4,7 +4,7 @@ import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph6.txt", int)
+G = np.loadtxt("graphs/graph1.txt", int)
 
 def order(G):
     return len(G)
@@ -29,22 +29,16 @@ def openNeighborhood(G,v):
     return neighborhood
 
 def isConnected(G):
-    vConnected = openNeighborhood(G,0)
-#    print('inital add:', openNeighborhood(G,0))
-    totalPath = set()
+    totalNeighbors  = openNeighborhood(G,0)
     for i in range(1,order(G)):
-        for j in vConnected:
-            newNeighbors = openNeighborhood(G,j) - vConnected
-#            print('%d is connected to neighbors' % j, newNeighbors)
-#            print('adding', newNeighbors)
+        for j in totalNeighbors:
+            newNeighbors = openNeighborhood(G,j) - totalNeighbors
             if len(newNeighbors) > 0:
                 break
-        vConnected = vConnected | newNeighbors 
-        if len(vConnected) == order(G):
+        totalNeighbors = totalNeighbors | newNeighbors 
+        if len(totalNeighbors) == order(G):
             break
-        
-    
-    return True if len(vConnected) == order(G) else False
+    return True if len(totalNeighbors) == order(G) else False
 
 # Function Calls
 print("The adjacency matrix of G is: ")
