@@ -4,7 +4,7 @@ import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph7.txt", int)
+G = np.loadtxt("graphs/graph5.txt", int)
 
 def order(G):
     return len(G)
@@ -105,8 +105,23 @@ def indyNumber(G):
                     if  G[n][m] == 1:
                         independant = False
             if (independant):
+                print(filtered[j])
                 return len(filtered[j])
 #            print(filtered[j], independant)
+
+def cliqueNumber(G):
+    for i in reversed(range(1,order(G)+1)):
+        filtered = [x for x in powerset(set(range(order(G)))) if len(x) == i]
+        for j in range(len(filtered)):
+            clique = True
+            for n in filtered[j]:
+                for m in filtered[j]:
+                    if G[n][m] != 1 and n != m:
+                        clique = False
+            if (clique):
+                print(filtered[j])
+                return len(filtered[j])
+#            print(filtered[j], clique)
 
 def complement(G):
     complement = G
@@ -133,6 +148,7 @@ print('connected:', isConnected(G))
 print('domination number:', domNumber(G))
 print('total domination number:', totalDomNumber(G))
 print('independance number:', indyNumber(G))
+print('clique number:', cliqueNumber(G))
 print('complement:\n', complement(G))
 print('\n')
 for i in range(0,order(G)):
