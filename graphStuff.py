@@ -4,7 +4,7 @@ import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph2.txt", int)
+G = np.loadtxt("graphs/graph6.txt", int)
 
 def order(G):
     return len(G)
@@ -60,12 +60,12 @@ def domNumber(G):
         filtered = [x for x in powerset(set(range(order(G)))) if len(x) == i]
         for j in range(len(filtered)):
             if (isDom(filtered[j], G)):
-                print(filtered[j], isDom(filtered[j],G))
+#                print(filtered[j], isDom(filtered[j],G))
                 notDominating = False
-            else:
-                print(filtered[j], isDom(filtered[j],G))
+#            else:
+#                print(filtered[j], isDom(filtered[j],G))
         if (notDominating):
-            print(filtered[j], isDom(filtered[j],G))
+#            print(filtered[j], isDom(filtered[j],G))
             return i+1
     return 1
 
@@ -73,8 +73,8 @@ def isDom(S, G):
     totalNeighbors = set()
     for v in S:
         totalNeighbors = totalNeighbors | openNeighborhood(G,v)
-        if (len(totalNeighbors) == order(G)):
-            print('neighbors of', S, totalNeighbors)
+#        if (len(totalNeighbors) == order(G)):
+#            print('neighbors of', S, totalNeighbors)
     return (len(totalNeighbors) == order(G))
 
 def complement(G):
