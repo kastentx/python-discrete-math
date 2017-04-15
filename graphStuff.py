@@ -4,7 +4,7 @@ import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph7.txt", int)
+G = np.loadtxt("graphs/graph2.txt", int)
 
 def order(G):
     return len(G)
@@ -49,10 +49,32 @@ def isConnected(G):
             break
     return True if len(totalNeighbors) == order(G) else False
 
+def powerset(iterable):
+    s = list(iterable)
+    return list(itertools.chain.from_iterable(itertools.combinations(s, r) for r in
+        range(len(s)+1)))
+
+def domNumber(G):
+    for i in reversed(range(1,order(G)+1)):
+        notDominating = True
+        filtered = [x for x in powerset(set(range(order(G)))) if len(x) == i]
+        for j in range(len(filtered)):
+            if (isDom(filtered[j], G)):
+                print(filtered[j], isDom(filtered[j],G))
+                notDominating = False
+            else:
+                print(filtered[j], isDom(filtered[j],G))
+        if (notDominating):
+            print(filtered[j], isDom(filtered[j],G))
+            return i+1
+    return 1
+
 def isDom(S, G):
     totalNeighbors = set()
     for v in S:
         totalNeighbors = totalNeighbors | openNeighborhood(G,v)
+        if (len(totalNeighbors) == order(G)):
+            print('neighbors of', S, totalNeighbors)
     return (len(totalNeighbors) == order(G))
 
 def complement(G):
@@ -75,8 +97,9 @@ print('max degree:', maxDegree(G))
 print('min degree:', minDegree(G))
 print('degree sequence:', degreeSequence(G))
 print('connected:', isConnected(G))
-S = {2, 4}
-print('2 and 4 dominate?', isDom(S,G))
+#S = {2, 4}
+#print('2 and 4 dominate?', isDom(S,G))
+print('domination number:', domNumber(G))
 print('complement:\n', complement(G))
 print('\n')
 for i in range(0,order(G)):
