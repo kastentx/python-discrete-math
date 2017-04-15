@@ -59,7 +59,7 @@ def totalDomNumber(G):
         notDominating = True
         filtered = [x for x in powerset(set(range(order(G)))) if len(x) == i]
         for j in range(len(filtered)):
-            if (isDom(filtered[j], G, False)):
+            if (isDom(filtered[j], G, 'closed')):
 #                print(filtered[j], isDom(filtered[j],G))
                 notDominating = False
 #            else:
@@ -84,16 +84,29 @@ def domNumber(G):
             return i+1
     return 1
 
-def isDom(S, G, openNeighbors = True):
+def isDom(S, G, neighbors = 'open'):
     totalNeighbors = set()
     for v in S:
-        if (openNeighbors == True):
+        if (neighbors == 'open'):
             totalNeighbors = totalNeighbors | openNeighborhood(G,v)
         else:
             totalNeighbors = totalNeighbors | closedNeighborhood(G,v)
 #        if (len(totalNeighbors) == order(G)):
 #            print('neighbors of', S, totalNeighbors)
     return (len(totalNeighbors) == order(G))
+
+def indyNumber(G):
+    for i in reversed(range(1,order(G)+1)):
+        filtered = [x for x in powerset(set(range(order(G)))) if len(x) == i]
+        for j in range(len(filtered)):
+            independant = True
+            for n in filtered[j]:
+                for m in filtered[j]:
+                    if  G[n][m] == 1:
+                        independant = False
+            if (independant):
+                return len(filtered[j])
+#            print(filtered[j], independant)
 
 def complement(G):
     complement = G
@@ -119,6 +132,7 @@ print('connected:', isConnected(G))
 #print('2 and 4 dominate?', isDom(S,G))
 print('domination number:', domNumber(G))
 print('total domination number:', totalDomNumber(G))
+print('independance number:', indyNumber(G))
 print('complement:\n', complement(G))
 print('\n')
 for i in range(0,order(G)):
