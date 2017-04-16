@@ -184,6 +184,14 @@ def residue(G):
     residue = len(dSeq)
     return residue
 
+def chromatic(G):
+    # if graph is complete, then maxDegree+1 colors are needed
+    # otherwise, chromatic number is at most maxDegree
+    # but it is greater than/equal to the clique number
+
+    # this means that at least we can restrict the range
+    # even if the algorithm itself is super slow
+
 def complement(G):
     complement = G.copy()
     for i in range(order(G)):
