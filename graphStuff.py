@@ -105,7 +105,7 @@ def indyNumber(G):
                     if  G[n][m] == 1:
                         independant = False
             if (independant):
-                print(filtered[j])
+#                print(filtered[j])
                 return len(filtered[j])
 #            print(filtered[j], independant)
 
@@ -119,7 +119,7 @@ def cliqueNumber(G):
                     if G[n][m] != 1 and n != m:
                         clique = False
             if (clique):
-                print(filtered[j])
+#                print(filtered[j])
                 return len(filtered[j])
 #            print(filtered[j], clique)
 
@@ -139,8 +139,8 @@ def distance(G, v1, v2):
         return 'not connected'
 
 def eccentricity(G, v):
-    return np.amax([distance(G, x, y) for x in range(order(G)) for y in
-        sorted(range(order(G)-1), reverse = True) if x < y])
+#    print([distance(G, v, v2) for v2 in range(order(G)) if v != v2])
+    return np.amax([distance(G, v, v2) for v2 in range(order(G)) if v != v2])
 
 def radius(G):
     return np.amin([eccentricity(G, x) for x in range(order(G))])
@@ -215,7 +215,7 @@ print('eccentricity of v2:', eccentricity(G, 2))
 print('radius of G:', radius(G))
 print('diameter of G:', diameter(G))
 print('residue of G:', residue(G))
-print('cycle for v2:', cycle(G, 2))
+print('length of cycle for v2:', cycle(G, 2))
 print('girth of G:', girth(G))
 #print('complement:\n', complement(G))
 #print('\n')
