@@ -147,6 +147,20 @@ def radius(G):
 def diameter(G):
     return np.amax([eccentricity(G, x) for x in range(order(G))])
 
+def residue(G):
+    dSeq = degreeSequence(G)
+#    print(dSeq)
+    maxD = dSeq[0]
+    while maxD > 0:
+        dSeq.remove(dSeq[0])
+        for i in range(maxD):
+            dSeq[i] = dSeq[i] - 1
+        dSeq.sort(reverse = True)
+#        print(dSeq)
+        maxD = dSeq[0]
+    residue = len(dSeq)
+    return residue
+
 def complement(G):
     complement = G.copy()
     for i in range(order(G)):
@@ -177,6 +191,7 @@ print('distance between 5 and 0:', distance(G, 5, 0))
 print('eccentricity of v2:', eccentricity(G, 2))
 print('radius of G:', radius(G))
 print('diameter of G:', diameter(G))
+print('residue of G:', residue(G))
 #print('complement:\n', complement(G))
 #print('\n')
 #for i in range(0,order(G)):
