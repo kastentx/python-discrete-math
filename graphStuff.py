@@ -4,7 +4,7 @@ import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph5.txt", int)
+G = np.loadtxt("graphs/graph2.txt", int)
 
 def order(G):
     return len(G)
@@ -123,11 +123,32 @@ def cliqueNumber(G):
                 return len(filtered[j])
 #            print(filtered[j], clique)
 
+def distance(G, v1, v2):
+    distance = 0
+    if v1 == v2:
+        return distance
+    visited = openNeighborhood(G, v1)
+    distance += 1
+    while v2 not in visited and distance < order(G):
+        for v in visited.copy():
+            visited = visited | closedNeighborhood(G, v)
+        distance += 1
+    if v2 in visited:
+        return distance
+    else:
+        return 'not connected'
+
+def maxDistance(G, v):
+    return np.amax([distance(G,x,y) for x in range(order(G)) for y in range(order(G)) if x != y])
+
+def eccentricity(G):
+    distances = [x for x in range(order(G))]
+
 def complement(G):
-    complement = G
+    complement = G.copy()
     for i in range(order(G)):
         for j in range(order(G)):
-            if G[i][j] == 0:
+            if G[i][j] == 0 and i != j:
                 complement[i][j] = 1
             else:
                 complement[i][j] = 0
@@ -149,9 +170,11 @@ print('domination number:', domNumber(G))
 print('total domination number:', totalDomNumber(G))
 print('independance number:', indyNumber(G))
 print('clique number:', cliqueNumber(G))
-print('complement:\n', complement(G))
-print('\n')
-for i in range(0,order(G)):
-    print('degree of %s:' % i, degree(G,i))
-    print('open neighborhood of %s:' % i, openNeighborhood(G,i))
-    print('closed neighborhood of %s:' % i, closedNeighborhood(G,i))
+print('distance between 5 and 0:', distance(G, 5, 0))
+print('maxDistance function output for 2:', maxDistance(G, 2))
+#print('complement:\n', complement(G))
+#print('\n')
+#for i in range(0,order(G)):
+#    print('degree of %s:' % i, degree(G,i))
+#    print('open neighborhood of %s:' % i, openNeighborhood(G,i))
+#    print('closed neighborhood of %s:' % i, closedNeighborhood(G,i))
