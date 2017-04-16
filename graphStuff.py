@@ -4,7 +4,7 @@ import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph2.txt", int)
+G = np.loadtxt("graphs/graph7.txt", int)
 
 def order(G):
     return len(G)
@@ -138,11 +138,14 @@ def distance(G, v1, v2):
     else:
         return 'not connected'
 
-def maxDistance(G, v):
-    return np.amax([distance(G,x,y) for x in range(order(G)) for y in range(order(G)) if x != y])
+def eccentricity(G, v):
+    return np.amax([distance(G, x, y) for x in range(order(G)) for y in range(order(G)) if x != y])
 
-def eccentricity(G):
-    distances = [x for x in range(order(G))]
+def radius(G):
+    return np.amin([eccentricity(G, x) for x in range(order(G))])
+
+def diameter(G):
+    return np.amax([eccentricity(G, x) for x in range(order(G))])
 
 def complement(G):
     complement = G.copy()
@@ -171,7 +174,9 @@ print('total domination number:', totalDomNumber(G))
 print('independance number:', indyNumber(G))
 print('clique number:', cliqueNumber(G))
 print('distance between 5 and 0:', distance(G, 5, 0))
-print('maxDistance function output for 2:', maxDistance(G, 2))
+print('eccentricity of v2:', eccentricity(G, 2))
+print('radius of G:', radius(G))
+print('diameter of G:', diameter(G))
 #print('complement:\n', complement(G))
 #print('\n')
 #for i in range(0,order(G)):
