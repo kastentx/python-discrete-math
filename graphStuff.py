@@ -4,7 +4,7 @@ import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph7.txt", int)
+G = np.loadtxt("graphs/graph3.txt", int)
 
 def order(G):
     return len(G)
@@ -139,13 +139,36 @@ def distance(G, v1, v2):
         return 'not connected'
 
 def eccentricity(G, v):
-    return np.amax([distance(G, x, y) for x in range(order(G)) for y in range(order(G)) if x != y])
+    return np.amax([distance(G, x, y) for x in range(order(G)) for y in
+        sorted(range(order(G)-1), reverse = True) if x < y])
 
 def radius(G):
     return np.amin([eccentricity(G, x) for x in range(order(G))])
 
 def diameter(G):
     return np.amax([eccentricity(G, x) for x in range(order(G))])
+
+def cycle(G, v):
+    length = 0
+    neighbors = closedNeighborhood(G, v)
+#    print('neighbors', neighbors)
+    length += 1
+    while v not in neighbors and length <= order(G):
+        oldNeighbors = neighbors.copy()
+        for x in neighbors.copy():
+            neighbors = neighbors | closedNeighborhood(G, x)
+        neighbors = neighbors - oldNeighbors 
+        if (length == 1):
+            neighbors = neighbors - {v}
+#        print('adding one to length...', neighbors)
+        length += 1
+    if v in neighbors:
+        return length
+    else:
+        return 'no cycle'
+
+def girth(G):
+    return np.amax([cycle(G, x) for x in range(order(G))])
 
 def residue(G):
     dSeq = degreeSequence(G)
@@ -154,7 +177,7 @@ def residue(G):
     while maxD > 0:
         dSeq.remove(dSeq[0])
         for i in range(maxD):
-            dSeq[i] = dSeq[i] - 1
+            dSeq[i] -= 1
         dSeq.sort(reverse = True)
 #        print(dSeq)
         maxD = dSeq[0]
@@ -187,11 +210,13 @@ print('domination number:', domNumber(G))
 print('total domination number:', totalDomNumber(G))
 print('independance number:', indyNumber(G))
 print('clique number:', cliqueNumber(G))
-print('distance between 5 and 0:', distance(G, 5, 0))
+print('distance between 4 and 0:', distance(G, 4, 0))
 print('eccentricity of v2:', eccentricity(G, 2))
 print('radius of G:', radius(G))
 print('diameter of G:', diameter(G))
 print('residue of G:', residue(G))
+print('cycle for v2:', cycle(G, 2))
+print('girth of G:', girth(G))
 #print('complement:\n', complement(G))
 #print('\n')
 #for i in range(0,order(G)):
