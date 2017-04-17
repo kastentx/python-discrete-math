@@ -1,10 +1,10 @@
 import numpy as np
-import collections
-import sys
+from collections import Counter
+# import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph3.txt", int)
+G = np.loadtxt("graphs/graph2.txt", int)
 
 def order(G):
     return len(G)
@@ -64,8 +64,11 @@ def totalDomNumber(G):
                 notDominating = False
 #            else:
 #                print(filtered[j], isDom(filtered[j],G))
-        if (notDominating):
-#            print(filtered[j], isDom(filtered[j],G))
+# NOTES this is a bit weird... not sure if this if clause is reversed
+# and I'm not sure if the i+1 is necessary.. its giving results
+# that are too big
+        if (notDominating == False):
+            print(filtered[j], isDom(filtered[j], G, 'closed'))
             return i+1
     return 1
 
@@ -136,7 +139,8 @@ def distance(G, v1, v2):
     if v2 in visited:
         return distance
     else:
-        return 'not connected'
+        return -1
+#        return 'not connected'
 
 def eccentricity(G, v):
 #    print([distance(G, v, v2) for v2 in range(order(G)) if v != v2])
@@ -165,7 +169,8 @@ def cycle(G, v):
     if v in neighbors:
         return length
     else:
-        return 'no cycle'
+        # changing error output to 0 instead of a string
+        return 0
 
 def girth(G):
     return np.amax([cycle(G, x) for x in range(order(G))])
@@ -185,6 +190,38 @@ def residue(G):
     return residue
 
 def chromatic(G):
+    vertices = list(range(order(G)))
+    colorList = list(range(maxDegree(G) + 1))
+    coloring = [-1] * order(G)
+#    print(coloring)
+#    print(vertices)
+#    print(colorList)
+    for i in range(order(G)):
+        neighbors = closedNeighborhood(G, i)
+        neighborColors = set()
+        for j in neighbors:
+            neighborColors.add(coloring[j])
+        print('neighbors of %d' % i, neighbors)
+#        print(coloring)
+        for c in colorList:
+            print('neighbor colors of %d' % i, neighborColors)
+            if c not in neighborColors:
+                print('\tassigning color {0} to vertex {1}'.format(c,i))
+                coloring[i] = c
+                break
+    coloring = [x for x in coloring if x != -1]
+    # Counter.keys() gives us unique colors used (no repeats)
+    # the len() method counts num of colors used
+    return len(set(coloring))
+#    return len(Counter(coloring).keys())
+
+
+    # NEW NOTES
+    # a graph with size 0 is the only graph with X(G) = 1
+    # a bipartite graph with at least one edge has X(G) = 2
+    # an odd-cycle has X(G) = 3
+
+
     # if graph is complete, then maxDegree+1 colors are needed
     # otherwise, chromatic number is at most maxDegree
     # but it is greater than/equal to the clique number
@@ -218,13 +255,14 @@ print('domination number:', domNumber(G))
 print('total domination number:', totalDomNumber(G))
 print('independance number:', indyNumber(G))
 print('clique number:', cliqueNumber(G))
-print('distance between 4 and 0:', distance(G, 4, 0))
+print('distance between 2 and 0:', distance(G, 2, 0))
 print('eccentricity of v2:', eccentricity(G, 2))
 print('radius of G:', radius(G))
 print('diameter of G:', diameter(G))
 print('residue of G:', residue(G))
-print('length of cycle for v2:', cycle(G, 2))
+# print('length of cycle for v2:', cycle(G, 2))
 print('girth of G:', girth(G))
+print('chromatic:', chromatic(G))
 #print('complement:\n', complement(G))
 #print('\n')
 #for i in range(0,order(G)):
