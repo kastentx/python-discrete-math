@@ -1,10 +1,10 @@
 import numpy as np
-from collections import Counter
+# from collections import Counter
 # import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph2.txt", int)
+G = np.loadtxt("graphs/graph1.txt", int)
 
 def order(G):
     return len(G)
@@ -33,9 +33,12 @@ def openNeighborhood(G, v):
     return neighborhood
 
 def closedNeighborhood(G, v):
-    closed = openNeighborhood(G, v).copy()
-    closed.discard(v)
-    return closed
+    neighborhood = set()
+    for i in range(order(G)):
+        if G[v][i] == 1:
+            neighborhood.add(i)
+#    print (neighborhood)
+    return neighborhood
 
 def isConnected(G):
     totalNeighbors  = openNeighborhood(G, 0)
@@ -67,8 +70,8 @@ def totalDomNumber(G):
 # NOTES this is a bit weird... not sure if this if clause is reversed
 # and I'm not sure if the i+1 is necessary.. its giving results
 # that are too big
-        if (notDominating == False):
-            print(filtered[j], isDom(filtered[j], G, 'closed'))
+        if (notDominating):
+#            print(filtered[j], isDom(filtered[j], G, 'closed'))
             return i+1
     return 1
 
@@ -153,24 +156,55 @@ def diameter(G):
     return np.amax([eccentricity(G, x) for x in range(order(G))])
 
 def cycle(G, v):
-    length = 0
-    neighbors = closedNeighborhood(G, v)
-#    print('neighbors', neighbors)
-    length += 1
-    while v not in neighbors and length <= order(G):
-        oldNeighbors = neighbors.copy()
-        for x in neighbors.copy():
-            neighbors = neighbors | closedNeighborhood(G, x)
-        neighbors = neighbors - oldNeighbors 
-        if (length == 1):
-            neighbors = neighbors - {v}
-#        print('adding one to length...', neighbors)
-        length += 1
-    if v in neighbors:
-        return length
-    else:
-        # changing error output to 0 instead of a string
+#    length = 0
+#    neighbors = closedNeighborhood(G, v)
+#    print('neighbors of {0}'.format(v), neighbors)
+#    length += 1
+#    while v not in neighbors and length <= order(G):
+#        oldNeighbors = neighbors.copy()
+#        visited = set()
+#
+#        for x in oldNeighbors:
+#            print('for {0} the neighbors are'.format(x), closedNeighborhood(G, x))
+#            if length == 1:
+#                neighbors = neighbors - {v}
+#            neighbors = neighbors | closedNeighborhood(G, x)
+#
+#        length += 1       
+#        visited = visited | oldNeighbors
+#        print('visited contains:', visited) 
+#        neighbors = neighbors - oldNeighbors 
+#        neighbors = neighbors - visited
+#        print('next round of neighbors', neighbors)
+#        print('visited:', visited)
+#        print('length is now', length)
+#    if v in neighbors and length != 1:
+#        return length+1
+#    else:
+#        changing error output to 0 instead of a string
+#        return 0
+    length = 0 
+
+    if degree(G, v) <= 1:
         return 0
+
+    searchable = [x for x in closedNeighborhood(G,v) if degree(G, x) > 1]
+    neighbors = set()
+    while v not in neighbors and length < order(G):
+        length += 1
+        print('length is {0}'.format(length))
+        for i in searchable:
+            print('{0} is a neighbor of {1} and is not a leaf'.format(i,v))
+            neighbors = neighbors | closedNeighborhood(G, i)
+        if length == 1:
+            neighbors = neighbors - {v}
+            print('neighbors are', neighbors)
+        searchable = neighbors
+    if v in neighbors:
+        return length + 1
+    else:
+        return 0
+
 
 def girth(G):
     return np.amax([cycle(G, x) for x in range(order(G))])
@@ -201,12 +235,12 @@ def chromatic(G):
         neighborColors = set()
         for j in neighbors:
             neighborColors.add(coloring[j])
-        print('neighbors of %d' % i, neighbors)
+#        print('neighbors of %d' % i, neighbors)
 #        print(coloring)
         for c in colorList:
-            print('neighbor colors of %d' % i, neighborColors)
+#            print('neighbor colors of %d' % i, neighborColors)
             if c not in neighborColors:
-                print('\tassigning color {0} to vertex {1}'.format(c,i))
+#                print('\tassigning color {0} to vertex {1}'.format(c,i))
                 coloring[i] = c
                 break
     coloring = [x for x in coloring if x != -1]
@@ -245,24 +279,24 @@ print(G)
 print('\n')
 print('order of G:', order(G))
 print('size:', size(G))
-print('max degree:', maxDegree(G))
-print('min degree:', minDegree(G))
-print('degree sequence:', degreeSequence(G))
-print('connected:', isConnected(G))
+#print('max degree:', maxDegree(G))
+#print('min degree:', minDegree(G))
+#print('degree sequence:', degreeSequence(G))
+#print('connected:', isConnected(G))
 #S = {2, 4}
 #print('2 and 4 dominate?', isDom(S,G))
-print('domination number:', domNumber(G))
-print('total domination number:', totalDomNumber(G))
-print('independance number:', indyNumber(G))
-print('clique number:', cliqueNumber(G))
-print('distance between 2 and 0:', distance(G, 2, 0))
-print('eccentricity of v2:', eccentricity(G, 2))
-print('radius of G:', radius(G))
-print('diameter of G:', diameter(G))
-print('residue of G:', residue(G))
-# print('length of cycle for v2:', cycle(G, 2))
-print('girth of G:', girth(G))
-print('chromatic:', chromatic(G))
+#print('domination number:', domNumber(G))
+#print('total domination number:', totalDomNumber(G))
+#print('independance number:', indyNumber(G))
+#print('clique number:', cliqueNumber(G))
+#print('distance between 2 and 0:', distance(G, 2, 0))
+#print('eccentricity of v2:', eccentricity(G, 2))
+#print('radius of G:', radius(G))
+#print('diameter of G:', diameter(G))
+#print('residue of G:', residue(G))
+print('length of cycle for v3:', cycle(G, 3))
+#print('girth of G:', girth(G))
+#print('chromatic:', chromatic(G))
 #print('complement:\n', complement(G))
 #print('\n')
 #for i in range(0,order(G)):
