@@ -4,7 +4,7 @@ import numpy as np
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph1.txt", int)
+G = np.loadtxt("graphs/graph9.txt", int)
 
 def order(G):
     return len(G)
@@ -155,7 +155,7 @@ def radius(G):
 def diameter(G):
     return np.amax([eccentricity(G, x) for x in range(order(G))])
 
-def cycle(G, v):
+def BrokenCycle(G, v):
 #    length = 0
 #    neighbors = closedNeighborhood(G, v)
 #    print('neighbors of {0}'.format(v), neighbors)
@@ -191,11 +191,14 @@ def cycle(G, v):
     searchable = [x for x in closedNeighborhood(G,v) if degree(G, x) > 1]
     neighbors = set()
     while v not in neighbors and length < order(G):
-        length += 1
         print('length is {0}'.format(length))
+        visited = [v]
         for i in searchable:
-            print('{0} is a neighbor of {1} and is not a leaf'.format(i,v))
             neighbors = neighbors | closedNeighborhood(G, i)
+            if distance(G, i, i-1) == 1:
+                length += 1
+                print('{0} is a neighbor of {1} and isnt a leaf'.format(i,visited))
+                visited.append(i)
         if length == 1:
             neighbors = neighbors - {v}
             print('neighbors are', neighbors)
@@ -204,6 +207,15 @@ def cycle(G, v):
         return length + 1
     else:
         return 0
+
+def cycle(G, v):
+    if degree(G, v) <= 1:
+        return 0
+
+    validNeighbors = [x for x in closedNeighborhood(G, v) if degree(G, x) > 1]
+           
+    
+
 
 
 def girth(G):
@@ -290,11 +302,11 @@ print('size:', size(G))
 #print('independance number:', indyNumber(G))
 #print('clique number:', cliqueNumber(G))
 #print('distance between 2 and 0:', distance(G, 2, 0))
-#print('eccentricity of v2:', eccentricity(G, 2))
+print('eccentricity of v1:', eccentricity(G, 1))
 #print('radius of G:', radius(G))
 #print('diameter of G:', diameter(G))
 #print('residue of G:', residue(G))
-print('length of cycle for v3:', cycle(G, 3))
+print('length of cycle for v1:', cycle(G, 1))
 #print('girth of G:', girth(G))
 #print('chromatic:', chromatic(G))
 #print('complement:\n', complement(G))
