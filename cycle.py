@@ -1,6 +1,6 @@
 import numpy as np
 
-G = np.loadtxt("graphs/graph2.txt", int)
+G = np.loadtxt("graphs/graph10.txt", int)
 
 def order(G):
     return len(G)
@@ -71,7 +71,7 @@ def find_cycle(G, v):
 def eccentricity(G, v):
     # loop through all vertices and find longest path to the one passed as arg
     # save the longest one of all these and thats your answer
-    maxLength=0
+    maxLength = 0
     for x in range(order(G)):
         if (x != v):
 #            print(find_all_paths(G, v, x))
@@ -83,5 +83,5 @@ def eccentricity(G, v):
     return pathLengths[0] - 1
 
 
-print(find_cycle(G, 0))
+print(find_cycle(G, 3))
 print(eccentricity(G, 0))
