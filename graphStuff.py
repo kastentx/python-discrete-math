@@ -139,7 +139,7 @@ def distance(G, v1, v2):
         for v in visited.copy():
             visited = visited | closedNeighborhood(G, v)
         distance += 1
-    if v2 in visited:
+a   if v2 in visited:
         return distance
     else:
         return -1
