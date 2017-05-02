@@ -1,6 +1,6 @@
 import numpy as np
 import graphStuff as gs
-G = np.loadtxt("graphs/graph9.txt", int)
+G = np.loadtxt("graphs/dodecahedron.txt", int)
 
 def zeroForceNum(G):
     vertices = list(range(gs.order(G)))
@@ -66,7 +66,7 @@ def annihilationNum(G):
 def avgDegree(G):
     return int(np.sum(gs.degreeSequence(G)) / gs.order(G))
 
-print(avgDegree(G))
+# print(avgDegree(G))
 # print(annihilationNum(G))
 # print(subTotalDom(G))
-# print('zero forcing number for G is',zeroForceNum(G))
+print('zero forcing number for G is',zeroForceNum(G))

@@ -4,7 +4,7 @@ import numpy as np
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph9.txt", int)
+G = np.loadtxt("graphs/graph4.txt", int)
 
 def order(G):
     return len(G)
@@ -139,7 +139,7 @@ def distance(G, v1, v2):
         for v in visited.copy():
             visited = visited | closedNeighborhood(G, v)
         distance += 1
-a   if v2 in visited:
+    if v2 in visited:
         return distance
     else:
         return -1
@@ -154,69 +154,6 @@ def radius(G):
 
 def diameter(G):
     return np.amax([eccentricity(G, x) for x in range(order(G))])
-
-def BrokenCycle(G, v):
-#    length = 0
-#    neighbors = closedNeighborhood(G, v)
-#    print('neighbors of {0}'.format(v), neighbors)
-#    length += 1
-#    while v not in neighbors and length <= order(G):
-#        oldNeighbors = neighbors.copy()
-#        visited = set()
-#
-#        for x in oldNeighbors:
-#            print('for {0} the neighbors are'.format(x), closedNeighborhood(G, x))
-#            if length == 1:
-#                neighbors = neighbors - {v}
-#            neighbors = neighbors | closedNeighborhood(G, x)
-#
-#        length += 1       
-#        visited = visited | oldNeighbors
-#        print('visited contains:', visited) 
-#        neighbors = neighbors - oldNeighbors 
-#        neighbors = neighbors - visited
-#        print('next round of neighbors', neighbors)
-#        print('visited:', visited)
-#        print('length is now', length)
-#    if v in neighbors and length != 1:
-#        return length+1
-#    else:
-#        changing error output to 0 instead of a string
-#        return 0
-    length = 0 
-
-    if degree(G, v) <= 1:
-        return 0
-
-    searchable = [x for x in closedNeighborhood(G,v) if degree(G, x) > 1]
-    neighbors = set()
-    while v not in neighbors and length < order(G):
-        print('length is {0}'.format(length))
-        visited = [v]
-        for i in searchable:
-            neighbors = neighbors | closedNeighborhood(G, i)
-            if distance(G, i, i-1) == 1:
-                length += 1
-                print('{0} is a neighbor of {1} and isnt a leaf'.format(i,visited))
-                visited.append(i)
-        if length == 1:
-            neighbors = neighbors - {v}
-            print('neighbors are', neighbors)
-        searchable = neighbors
-    if v in neighbors:
-        return length + 1
-    else:
-        return 0
-
-def cycle(G, v):
-    if degree(G, v) <= 1:
-        return 0
-
-    validNeighbors = [x for x in closedNeighborhood(G, v) if degree(G, x) > 1]
-           
-    
-
-
 
 def girth(G):
     return np.amax([cycle(G, x) for x in range(order(G))])
@@ -289,22 +226,23 @@ def complement(G):
 #print("The adjacency matrix of G is: ")
 #print(G)
 #print('\n')
-#print('order of G:', order(G))
-#print('size:', size(G))
-#print('max degree:', maxDegree(G))
-#print('min degree:', minDegree(G))
+print('order of G:', order(G))
+print('size:', size(G))
+print('max degree:', maxDegree(G))
+print('min degree:', minDegree(G))
 #print('degree sequence:', degreeSequence(G))
 #print('connected:', isConnected(G))
 #S = {2, 4}
 #print('2 and 4 dominate?', isDom(S,G))
 #print('domination number:', domNumber(G))
 #print('total domination number:', totalDomNumber(G))
-#print('independance number:', indyNumber(G))
-#print('clique number:', cliqueNumber(G))
+print('independance number:', indyNumber(G))
+print('clique number:', cliqueNumber(G))
 #print('distance between 2 and 0:', distance(G, 2, 0))
-#print('eccentricity of v1:', eccentricity(G, 1))
-#print('radius of G:', radius(G))
-#print('diameter of G:', diameter(G))
+for i in range(len(G)):
+    print('eccentricity of v{0}: {1}'.format(i, eccentricity(G, i)))
+print('radius of G:', radius(G))
+print('diameter of G:', diameter(G))
 #print('residue of G:', residue(G))
 #print('length of cycle for v1:', cycle(G, 1))
 #print('girth of G:', girth(G))

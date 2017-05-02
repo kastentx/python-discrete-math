@@ -1,6 +1,6 @@
 import numpy as np
 
-G = np.loadtxt("graphs/graph10.txt", int)
+G = np.loadtxt("graphs/dodecahedron.txt", int)
 
 def order(G):
     return len(G)
@@ -83,5 +83,6 @@ def eccentricity(G, v):
     return pathLengths[0] - 1
 
 
-print(find_cycle(G, 3))
-print(eccentricity(G, 0))
+# print(find_cycle(G, 3))
+for i in range(order(G)):
+    print(eccentricity(G, i))

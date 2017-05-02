@@ -29,6 +29,25 @@ class WeightedGraph:
             V[rootA].append(vertex)
         V.pop(rootB)
 
+    def __minCostEdge(self, v):
+        cost = 1000
+        edge = []
+        for e in self.edges:
+            if e[0][0] == v or e[0][1] == v:
+                if self.__weight(e) < cost:
+                    cost = self.__weight(e)
+                    edge = e
+        return edge
+
+    def __incidentEdges(self, v):
+        edges = []
+        for e in self.edges:
+            if e[0][0] == v or e[0][1] == v:
+                edges.append(e)
+        return edges
+
+    def __nodesInE(self, e):
+        return [e[0][0],e[0][1]]
     def kruskals(self):
         E = self.__sortedEdges()
         V = self.vertices 
@@ -46,11 +65,33 @@ class WeightedGraph:
         return MST
 
     def prims(self):
-        E = self.edges
-        V = self.vertices
-        costIndex = []
-        for v in range(len(self.vertices)-1):
-            if E[v][0][0] == v or E[v][0][1] == v:
-                print('edge found: {0} weight: {1}'.format(E[v],E[v][1]))
-            tree = set()
-        return costIndex
+        vTree = []
+        vKeys = dict()
+        # initialize nodes
+        for v in range(len(self.vertices)):
+            vKeys.update({v:999})
+        vKeys.update({0:0})
+
+
+        while len(vTree) != len(self.vertices):
+            lowestKey = 1000
+            lowNode = -1
+            for n in vKeys:
+                if vKeys[n] < lowestKey and n not in vTree:
+                    lowestKey = vKeys[n]
+                    lowNode = n
+            vTree.append(lowNode)
+            # finding adjacent nodes
+            adjacentNodes = []
+            for edge in self.__incidentEdges(lowNode):
+                edgeNodes = self.__nodesInE(edge)
+                for i in edgeNodes:
+                    if i not in vTree:
+                        adjacentNodes.append(i)
+            # updating scores of adjacent nodes
+            for k in adjacentNodes:
+                for e in self.edges:
+                    if k in self.__nodesInE(e) and lowNode in self.__nodesInE(e):
+                        if self.__weight(e) < vKeys[k]:
+                            vKeys[k] = self.__weight(e)
+        print(vKeys) 
