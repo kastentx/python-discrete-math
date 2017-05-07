@@ -1,10 +1,11 @@
 import numpy as np
+import cycle
 # from collections import Counter
 # import sys
 import itertools
 
 # Load the adjacency matrix
-G = np.loadtxt("graphs/graph4.txt", int)
+G = np.loadtxt("graphs/dodecahedron.txt", int)
 
 def order(G):
     return len(G)
@@ -156,7 +157,7 @@ def diameter(G):
     return np.amax([eccentricity(G, x) for x in range(order(G))])
 
 def girth(G):
-    return np.amax([cycle(G, x) for x in range(order(G))])
+    return np.amax([cycle.find_cycle(G, x) for x in range(order(G))])
 
 def residue(G):
     dSeq = degreeSequence(G)
@@ -226,23 +227,23 @@ def complement(G):
 #print("The adjacency matrix of G is: ")
 #print(G)
 #print('\n')
-print('order of G:', order(G))
-print('size:', size(G))
-print('max degree:', maxDegree(G))
-print('min degree:', minDegree(G))
+#print('order of G:', order(G))
+#print('size:', size(G))
+#print('max degree:', maxDegree(G))
+#print('min degree:', minDegree(G))
 #print('degree sequence:', degreeSequence(G))
 #print('connected:', isConnected(G))
 #S = {2, 4}
 #print('2 and 4 dominate?', isDom(S,G))
 #print('domination number:', domNumber(G))
 #print('total domination number:', totalDomNumber(G))
-print('independance number:', indyNumber(G))
-print('clique number:', cliqueNumber(G))
+#print('independance number:', indyNumber(G))
+#print('clique number:', cliqueNumber(G))
 #print('distance between 2 and 0:', distance(G, 2, 0))
-for i in range(len(G)):
-    print('eccentricity of v{0}: {1}'.format(i, eccentricity(G, i)))
-print('radius of G:', radius(G))
-print('diameter of G:', diameter(G))
+#for i in range(len(G)):
+print('eccentricity of v{0}: {1}'.format(2, eccentricity(G, 2)))
+#print('radius of G:', radius(G))
+#print('diameter of G:', diameter(G))
 #print('residue of G:', residue(G))
 #print('length of cycle for v1:', cycle(G, 1))
 #print('girth of G:', girth(G))
@@ -252,4 +253,4 @@ print('diameter of G:', diameter(G))
 #for i in range(0,order(G)):
 #    print('degree of %s:' % i, degree(G,i))
 #    print('open neighborhood of %s:' % i, openNeighborhood(G,i))
-#    print('closed neighborhood of %s:' % i, closedNeighborhood(G,i))
+#print('closed neighborhood of %s:' % i, closedNeighborhood(G,i))

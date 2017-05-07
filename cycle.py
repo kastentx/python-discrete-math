@@ -82,7 +82,3 @@ def eccentricity(G, v):
 #    return maxLength
     return pathLengths[0] - 1
 
-
-# print(find_cycle(G, 3))
-for i in range(order(G)):
-    print(eccentricity(G, i))

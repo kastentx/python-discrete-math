@@ -51,12 +51,12 @@ class WeightedGraph:
     def kruskals(self):
         E = self.__sortedEdges()
         V = self.vertices 
-        MST = set()
+        MST = list()
         i = 0
         # when the length of V equals 1, we will know the subgraph is connected
         while len(V) > 1:
             if self.__find(E[i][0][0]) != self.__find(E[i][0][1]):
-                MST.add((E[i][0][0],E[i][0][1]))
+                MST.append([[E[i][0][0],E[i][0][1]], E[i][1]])
                 self.__union(V, E[i][0][0], E[i][0][1])
             i += 1
         # NOTE this resets the vertices array back to idividual nodes
@@ -67,6 +67,7 @@ class WeightedGraph:
     def prims(self):
         vTree = []
         vKeys = dict()
+        MST = dict()
         # initialize nodes
         for v in range(len(self.vertices)):
             vKeys.update({v:999})
@@ -94,4 +95,5 @@ class WeightedGraph:
                     if k in self.__nodesInE(e) and lowNode in self.__nodesInE(e):
                         if self.__weight(e) < vKeys[k]:
                             vKeys[k] = self.__weight(e)
-        print(vKeys) 
+                            MST[k] = e
+        return list(MST.values())
